@@ -1,0 +1,180 @@
+{"frames": {
+
+"images-0.png":
+{
+	"frame": {"x":1,"y":525,"w":91,"h":102},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":91,"h":102},
+	"sourceSize": {"w":91,"h":102}
+},
+"images-1.png":
+{
+	"frame": {"x":1,"y":295,"w":108,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":70},
+	"sourceSize": {"w":108,"h":70}
+},
+"images-2.png":
+{
+	"frame": {"x":1,"y":367,"w":95,"h":84},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":95,"h":84},
+	"sourceSize": {"w":95,"h":84}
+},
+"images-3.png":
+{
+	"frame": {"x":1,"y":764,"w":76,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":87},
+	"sourceSize": {"w":76,"h":87}
+},
+"images-4.png":
+{
+	"frame": {"x":1,"y":853,"w":73,"h":79},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":73,"h":79},
+	"sourceSize": {"w":73,"h":79}
+},
+"images-5.png":
+{
+	"frame": {"x":1,"y":1049,"w":65,"h":73},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":65,"h":73},
+	"sourceSize": {"w":65,"h":73}
+},
+"images-6.png":
+{
+	"frame": {"x":1,"y":691,"w":77,"h":71},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":77,"h":71},
+	"sourceSize": {"w":77,"h":71}
+},
+"images-7.png":
+{
+	"frame": {"x":1,"y":629,"w":80,"h":60},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":60},
+	"sourceSize": {"w":80,"h":60}
+},
+"images-8.png":
+{
+	"frame": {"x":1,"y":1,"w":125,"h":148},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":148},
+	"sourceSize": {"w":125,"h":148}
+},
+"images-9.png":
+{
+	"frame": {"x":1,"y":151,"w":122,"h":142},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":122,"h":142},
+	"sourceSize": {"w":122,"h":142}
+},
+"images-10.png":
+{
+	"frame": {"x":1,"y":453,"w":92,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":92,"h":70},
+	"sourceSize": {"w":92,"h":70}
+},
+"images-11.png":
+{
+	"frame": {"x":1,"y":991,"w":72,"h":56},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":72,"h":56},
+	"sourceSize": {"w":72,"h":56}
+},
+"images-12.png":
+{
+	"frame": {"x":79,"y":812,"w":42,"h":75},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":42,"h":75},
+	"sourceSize": {"w":42,"h":75}
+},
+"images-13.png":
+{
+	"frame": {"x":68,"y":1049,"w":56,"h":58},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":56,"h":58},
+	"sourceSize": {"w":56,"h":58}
+},
+"images-14.png":
+{
+	"frame": {"x":71,"y":1109,"w":52,"h":57},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":52,"h":57},
+	"sourceSize": {"w":52,"h":57}
+},
+"images-15.png":
+{
+	"frame": {"x":1,"y":1124,"w":68,"h":49},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":49},
+	"sourceSize": {"w":68,"h":49}
+},
+"images-16.png":
+{
+	"frame": {"x":76,"y":889,"w":49,"h":49},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":49,"h":49},
+	"sourceSize": {"w":49,"h":49}
+},
+"images-17.png":
+{
+	"frame": {"x":1,"y":934,"w":73,"h":55},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":73,"h":55},
+	"sourceSize": {"w":73,"h":55}
+},
+"images-18.png":
+{
+	"frame": {"x":80,"y":697,"w":45,"h":54},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":45,"h":54},
+	"sourceSize": {"w":45,"h":54}
+},
+"images-19.png":
+{
+	"frame": {"x":83,"y":629,"w":43,"h":66},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":43,"h":66},
+	"sourceSize": {"w":43,"h":66}
+},
+"images-20.png":
+{
+	"frame": {"x":80,"y":753,"w":44,"h":57},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":44,"h":57},
+	"sourceSize": {"w":44,"h":57}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "food.png",
+	"format": "RGBA8888",
+	"size": {"w":127,"h":1174},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:06d5248cc7f8b4c7ea3f4148d80dd3ab:62ec0fcb021655a3709088e0382b4bc2:dc56c85744751b4d97b97a9b9d1306ba$"
+}
+}
