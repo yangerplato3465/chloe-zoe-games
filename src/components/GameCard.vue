@@ -30,7 +30,8 @@ defineProps({
 <style scoped>
 /* A chunky, pressable tile: the solid "lip" underneath squashes when it is pushed. */
 .game-card {
-  display: block;
+  display: grid;
+  grid-template-rows: auto 1fr;
   overflow: hidden;
   border: 3px solid var(--line);
   border-radius: 28px;

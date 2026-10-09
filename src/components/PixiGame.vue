@@ -48,6 +48,8 @@ onMounted(async () => {
   const pixi = new Application()
   const [textures] = await Promise.all([
     loadTextures(props.atlases),
+    // Text drawn on the canvas needs the site's font loaded first, or it comes out in a fallback.
+    document.fonts.load('600 16px "Fredoka Variable"'),
     pixi.init({
       canvas: canvas.value,
       resizeTo: root.value,

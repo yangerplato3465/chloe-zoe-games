@@ -96,6 +96,11 @@ h1 {
   list-style: none;
 }
 
+/* Cards in a row are all as tall as the tallest one. */
+.games li {
+  display: grid;
+}
+
 @keyframes breathe {
   50% {
     transform: scaleY(1.035);
