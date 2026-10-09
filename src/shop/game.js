@@ -15,6 +15,7 @@ const STEP_LENGTH = 90
 const CUSTOMER_SCALE = 2
 const HEART_SCALE = 1.6
 const BUBBLE_Y = -196 // just above the customer's head
+const STAGE_HEIGHT = 96 // about the middle of a standing customer
 const OUTLINE = 0x9c7b6a
 
 function shuffled(list) {
@@ -95,12 +96,16 @@ function createPlate() {
   return { view, food, frame: null, homeX: 0 }
 }
 
-// Runs the shop on a Pixi app until that app is destroyed. The game only draws the scene;
-// whoever starts it hears about it through the callbacks:
-//   onServed()                  a customer just got the food they wanted
-//   onLayout({ scale, hudTop }) the scene was (re)laid out: screen pixels per design pixel,
-//                               and the design-pixel height of the awning that a HUD should clear
-export function startGame(app, textures, { onServed = () => {}, onLayout = () => {} } = {}) {
+// Builds the shop on a Pixi app. The scene sits empty until start() is called, then customers
+// keep coming until the app is destroyed. The game only draws the scene; whoever owns it hears
+// about it through the callbacks:
+//   onServed()   a customer just got the food they wanted
+//   onLayout({ scale, hudTop, stage })
+//                the scene was (re)laid out. scale is screen pixels per design pixel; hudTop is
+//                the design-pixel height of the awning that a HUD should clear; stage is the
+//                design-pixel point at the middle of where a customer stands, with the clear
+//                width between the stalls there.
+export function createShop(app, textures, { onServed = () => {}, onLayout = () => {} } = {}) {
   const { tween, wait } = createTweens(app.ticker)
   const size = { width: SAFE_WIDTH, height: SAFE_HEIGHT }
   const scenery = createScenery(textures)
@@ -128,7 +133,7 @@ export function startGame(app, textures, { onServed = () => {}, onLayout = () =>
     size.width = app.screen.width / scale
     size.height = app.screen.height / scale
     world.scale.set(scale)
-    scenery.layout(size.width, size.height)
+    const { stallGap } = scenery.layout(size.width, size.height)
     customerLayer.position.set(size.width / 2, size.height - COUNTER_HEIGHT - 8)
     plateLayer.position.set(size.width / 2, size.height - COUNTER_HEIGHT / 2 + 8)
 
@@ -138,7 +143,11 @@ export function startGame(app, textures, { onServed = () => {}, onLayout = () =>
       plate.view.x = plate.homeX
     })
 
-    onLayout({ scale, hudTop: scenery.awningBottom })
+    onLayout({
+      scale,
+      hudTop: scenery.awningBottom,
+      stage: { x: customerLayer.x, y: customerLayer.y - STAGE_HEIGHT, width: stallGap },
+    })
   }
 
   // Every character visits once before anyone comes back, and never twice in a row.
@@ -287,7 +296,13 @@ export function startGame(app, textures, { onServed = () => {}, onLayout = () =>
   layout()
   setChoosing(false)
 
-  ;(async () => {
+  let started = false
+
+  async function start() {
+    if (started) return
+    started = true
     for (;;) await playRound()
-  })()
+  }
+
+  return { start }
 }

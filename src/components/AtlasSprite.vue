@@ -1,8 +1,9 @@
 <script setup>
 import { computed } from 'vue'
-import { findFrame } from '../shop/assets.js'
+import { findFrame } from '../lib/atlases.js'
 
 const props = defineProps({
+  // "<atlas>/<frame name>", for example "ui/image-5.png".
   frame: { type: String, required: true },
   // Drawn height; the width follows the frame's proportions. Defaults to the frame's own size.
   height: { type: Number, default: null },

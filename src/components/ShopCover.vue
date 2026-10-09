@@ -1,6 +1,7 @@
 <script setup>
 import AtlasSprite from './AtlasSprite.vue'
-import { CHARACTERS, FOOD, STALLS, findFrame } from '../shop/assets.js'
+import { findFrame } from '../lib/atlases.js'
+import { CHARACTERS, FOOD, STALLS } from '../shop/assets.js'
 
 // The cover is a 400 x 300 miniature of the shop, drawn with the game's own art and colours.
 const AWNING_STRIPE = 40

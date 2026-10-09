@@ -106,6 +106,9 @@ export function createScenery(textures) {
     kitchen.position.set(width / 2 + stallOffset, ground - 34)
     drawCounter(counter, width, height)
     drawAwning(awning, width)
+
+    // The clear width between the two stalls, where customers stand.
+    return { stallGap: kitchen.x - kitchen.width / 2 - (bakery.x + bakery.width / 2) }
   }
 
   return { back, counter, awning, layout, awningBottom: AWNING_BOTTOM }
