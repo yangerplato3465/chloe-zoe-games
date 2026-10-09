@@ -1,0 +1,108 @@
+{"frames": {
+
+"ramen-0.png":
+{
+	"frame": {"x":551,"y":1,"w":155,"h":97},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":155,"h":97},
+	"sourceSize": {"w":155,"h":97}
+},
+"ramen-1.png":
+{
+	"frame": {"x":265,"y":1,"w":127,"h":138},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":127,"h":138},
+	"sourceSize": {"w":127,"h":138}
+},
+"ramen-2.png":
+{
+	"frame": {"x":159,"y":1,"w":104,"h":141},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":104,"h":141},
+	"sourceSize": {"w":104,"h":141}
+},
+"ramen-3.png":
+{
+	"frame": {"x":227,"y":144,"w":76,"h":77},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":76,"h":77},
+	"sourceSize": {"w":76,"h":77}
+},
+"ramen-4.png":
+{
+	"frame": {"x":589,"y":100,"w":110,"h":99},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":110,"h":99},
+	"sourceSize": {"w":110,"h":99}
+},
+"ramen-5.png":
+{
+	"frame": {"x":305,"y":141,"w":117,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":117,"h":98},
+	"sourceSize": {"w":117,"h":98}
+},
+"ramen-6.png":
+{
+	"frame": {"x":1,"y":144,"w":109,"h":92},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":109,"h":92},
+	"sourceSize": {"w":109,"h":92}
+},
+"ramen-7.png":
+{
+	"frame": {"x":424,"y":117,"w":100,"h":112},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":112},
+	"sourceSize": {"w":100,"h":112}
+},
+"ramen-8.png":
+{
+	"frame": {"x":112,"y":144,"w":113,"h":88},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":113,"h":88},
+	"sourceSize": {"w":113,"h":88}
+},
+"ramen-9.png":
+{
+	"frame": {"x":394,"y":1,"w":155,"h":114},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":155,"h":114},
+	"sourceSize": {"w":155,"h":114}
+},
+"ramen-10.png":
+{
+	"frame": {"x":526,"y":117,"w":61,"h":101},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":61,"h":101},
+	"sourceSize": {"w":61,"h":101}
+},
+"ramen-11.png":
+{
+	"frame": {"x":1,"y":1,"w":156,"h":141},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":156,"h":141},
+	"sourceSize": {"w":156,"h":141}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "ramen.png",
+	"format": "RGBA8888",
+	"size": {"w":707,"h":240},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:e285dcf9891cb714cc23102ea7c5b103:bbd3aa5273bce689040ea7eae338c266:a75816b313a502edfa5e8824d98d7280$"
+}
+}
