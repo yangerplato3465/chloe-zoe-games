@@ -2,6 +2,7 @@ import { Circle, Container, Graphics, Sprite } from 'pixi.js'
 import { BOX, FILLINGS, PARTS } from './assets.js'
 import { createStack } from './stack.js'
 import { shuffled } from '../lib/random.js'
+import { playSfx } from '../lib/sfx.js'
 import { createTweens, ease } from '../lib/tween.js'
 import { createBubble } from '../scene/bubble.js'
 import { createCustomer } from '../scene/customer.js'
@@ -219,13 +220,19 @@ export function createBurgerGame(app, textures, { onServed = () => {}, onLayout 
   // Nothing goes on top of the top bun, and the pile only gets so tall.
   function add(dish) {
     const full = dish.part !== 'topBun' && fillingCount() >= MAX_FILLINGS
-    if (topPart() === 'topBun' || full) return wiggle(dish.view, dish.home.x, tween)
+    if (topPart() === 'topBun' || full) {
+      playSfx('wrong')
+      return wiggle(dish.view, dish.home.x, tween)
+    }
+    playSfx('press')
     drop(burger.push(dish.part))
   }
 
   // Tapping the burger takes its top layer back off (but never the bottom bun).
   function undo() {
-    if (burger.parts().length > 1) toss(burger.pop())
+    if (burger.parts().length === 1) return
+    playSfx('press')
+    toss(burger.pop())
   }
 
   // How many layers above the bottom bun match the order so far, and whether that is all of it.
@@ -240,6 +247,7 @@ export function createBurgerGame(app, textures, { onServed = () => {}, onLayout 
   // Not what the customer asked for is no big deal: the box wiggles, the bubble swells to show
   // the order again, and the layers that do not belong flip off, leaving the part that is right.
   function sendBack(matching) {
+    playSfx('wrong')
     wiggle(box.view, box.home.x, tween)
     bubble.pulse()
     for (let i = 0; burger.parts().length - 1 > matching; i++) toss(burger.pop(), i * 70)
@@ -254,6 +262,7 @@ export function createBurgerGame(app, textures, { onServed = () => {}, onLayout 
         if (action === 'undo') return undo()
         const { matching, done } = check()
         if (!done) return sendBack(matching)
+        playSfx('press')
         onAction = null
         setBuilding(false)
         resolve()

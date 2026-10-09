@@ -17,8 +17,10 @@ defineProps({
         <p>{{ game.blurb }}</p>
       </div>
       <span class="play" aria-hidden="true">
+        <!-- Drawn with the triangle's centre of mass, not its box, in the middle: a play
+             triangle only looks centred in a circle that way. -->
         <svg viewBox="0 0 24 24">
-          <path d="M9 6.2v11.6a1 1 0 0 0 1.52.86l9.4-5.8a1 1 0 0 0 0-1.72l-9.4-5.8A1 1 0 0 0 9 6.2Z" />
+          <path d="M8.2 6.2v11.6a1 1 0 0 0 1.52.86l9.4-5.8a1 1 0 0 0 0-1.72l-9.4-5.8A1 1 0 0 0 8.2 6.2Z" />
         </svg>
       </span>
     </div>
@@ -107,8 +109,6 @@ p {
 .play svg {
   width: 32px;
   height: 32px;
-  /* The triangle's weight sits left of its box, so nudge it to look centred in the circle. */
-  margin-left: 2px;
   fill: var(--card);
   stroke: var(--ink);
   stroke-width: 1.8;

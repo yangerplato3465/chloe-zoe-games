@@ -4,10 +4,13 @@ import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import AtlasSprite from './AtlasSprite.vue'
 import HeartTally from './HeartTally.vue'
 import { UI, findFrame } from '../lib/atlases.js'
+import { preloadBgm, startBgm, stopBgm } from '../lib/bgm.js'
+import { playSfx, preloadSfx } from '../lib/sfx.js'
 import { loadTextures } from '../lib/textures.js'
 
 // Hosts a Pixi game: owns the canvas and the Pixi app, and draws what every game shares over
-// it, the Start button and the heart counter.
+// it, the Start button and the heart counter. It also plays the music, from Start until the
+// player leaves.
 const props = defineProps({
   // The names of the atlases the game draws from (see lib/atlases.js).
   atlases: { type: Array, required: true },
@@ -40,6 +43,8 @@ let game = null
 let unmounted = false
 
 onMounted(async () => {
+  preloadBgm()
+  preloadSfx()
   const pixi = new Application()
   const [textures] = await Promise.all([
     loadTextures(props.atlases),
@@ -64,12 +69,15 @@ onMounted(async () => {
 
 function start() {
   phase.value = 'playing'
+  playSfx('press')
+  startBgm()
   game.start()
 }
 
 // Destroying the app also stops its ticker, which is what ends the game's animations.
 onBeforeUnmount(() => {
   unmounted = true
+  stopBgm()
   app?.destroy(false, { children: true })
 })
 </script>

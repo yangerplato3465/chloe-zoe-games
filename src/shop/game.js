@@ -1,6 +1,7 @@
 import { Container, Sprite } from 'pixi.js'
 import { FOODS, STALLS } from './assets.js'
 import { shuffled } from '../lib/random.js'
+import { playSfx } from '../lib/sfx.js'
 import { createTweens, ease } from '../lib/tween.js'
 import { createBubble } from '../scene/bubble.js'
 import { createCustomer } from '../scene/customer.js'
@@ -146,6 +147,7 @@ export function createShop(app, textures, { onServed = () => {}, onLayout = () =
 
   // A wrong pick is no big deal: the plate wiggles and that food fades, so it is not picked again.
   function nope(plate) {
+    playSfx('wrong')
     plate.view.eventMode = 'none'
     plate.view.scale.set(1)
     wiggle(plate.view, plate.home.x, tween)
@@ -158,6 +160,7 @@ export function createShop(app, textures, { onServed = () => {}, onLayout = () =
     return new Promise((resolve) => {
       onPick = (plate) => {
         if (plate.frame !== wanted) return nope(plate)
+        playSfx('press')
         onPick = null
         setChoosing(false)
         resolve(plate)
