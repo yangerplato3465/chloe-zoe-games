@@ -1,7 +1,6 @@
 <script setup>
 import AtlasSprite from './AtlasSprite.vue'
-import { UI } from '../lib/atlases.js'
-import { HEART } from '../shop/assets.js'
+import { HEART, UI } from '../lib/atlases.js'
 
 defineProps({
   count: { type: Number, required: true },

@@ -2,7 +2,7 @@
 import AtlasSprite from '../components/AtlasSprite.vue'
 import GameCard from '../components/GameCard.vue'
 import { games } from '../games.js'
-import { CHARACTERS } from '../shop/assets.js'
+import { CHARACTERS } from '../lib/atlases.js'
 </script>
 
 <template>

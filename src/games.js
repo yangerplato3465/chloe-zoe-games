@@ -1,4 +1,5 @@
 import { defineAsyncComponent } from 'vue'
+import BurgerCover from './components/BurgerCover.vue'
 import ShopCover from './components/ShopCover.vue'
 
 // Every game on the main page, in the order shown. To add one, give it:
@@ -16,6 +17,14 @@ export const games = [
     background: '#d9f0f7',
     cover: ShopCover,
     component: defineAsyncComponent(() => import('./components/ShopGame.vue')),
+  },
+  {
+    id: 'burger',
+    title: 'Burger Stack',
+    blurb: 'Build the burger they want.',
+    background: '#d9f0f7',
+    cover: BurgerCover,
+    component: defineAsyncComponent(() => import('./components/BurgerGame.vue')),
   },
 ]
 

@@ -1,99 +1,47 @@
-import { Circle, Container, Graphics, Sprite } from 'pixi.js'
-import { CHARACTERS, FOODS, HEART } from './assets.js'
-import { COUNTER_HEIGHT, createScenery } from './scenery.js'
+import { Container, Sprite } from 'pixi.js'
+import { FOODS, STALLS } from './assets.js'
+import { shuffled } from '../lib/random.js'
 import { createTweens, ease } from '../lib/tween.js'
+import { createBubble } from '../scene/bubble.js'
+import { createCustomer } from '../scene/customer.js'
+import { createDish, wiggle } from '../scene/dish.js'
+import { fit } from '../scene/fit.js'
+import { createScenery } from '../scene/scenery.js'
+import { fitToScreen } from '../scene/screen.js'
 
-// The game is laid out in design pixels. At least SAFE_WIDTH x SAFE_HEIGHT of them always
-// fit on screen; wider or taller screens just show more of the scene.
+// In design pixels (see scene/screen.js).
 const SAFE_WIDTH = 600
 const SAFE_HEIGHT = 720
+const COUNTER_DEPTH = 220
 
 const CHOICES = 4
 const PLATE_SPACING = 148
-const WALK_SPEED = 0.3 // design pixels per millisecond
-const STEP_LENGTH = 90
-const CUSTOMER_SCALE = 2
-const HEART_SCALE = 1.6
-const BUBBLE_Y = -196 // just above the customer's head
+const STALL_SCALE = 1.5
 const STAGE_HEIGHT = 96 // about the middle of a standing customer
-const OUTLINE = 0x9c7b6a
 
-function shuffled(list) {
-  const result = [...list]
-  for (let i = result.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[result[i], result[j]] = [result[j], result[i]]
-  }
-  return result
-}
-
-// Scales a sprite so its texture fits inside a box, keeping its proportions.
-function fit(sprite, maxWidth, maxHeight) {
-  const { width, height } = sprite.texture
-  sprite.scale.set(Math.min(maxWidth / width, maxHeight / height))
-}
-
-function createCustomer(textures) {
-  const view = new Container()
-  const body = new Sprite()
-  body.anchor.set(0.5, 1)
-  body.scale.set(CUSTOMER_SCALE)
-  const heart = new Sprite(textures[HEART])
-  heart.anchor.set(0.5)
-  heart.visible = false
-  view.addChild(body, heart)
-  return { view, body, heart }
-}
-
-// A thought bubble whose origin is the smallest dot, so it grows out of the customer's head.
-function createBubble() {
-  const centre = { x: 88, y: -112 }
-  const dots = [
+// The thought bubble starts just above the customer's head.
+const BUBBLE = {
+  y: -196,
+  centre: { x: 88, y: -112 },
+  dots: [
     [0, 0, 8],
     [16, -28, 13],
-  ]
-  const puffs = [
+  ],
+  puffs: [
     [-50, -6, 48],
     [0, -30, 54],
     [50, -6, 48],
     [-28, 28, 46],
     [28, 28, 46],
     [0, 0, 56],
-  ].map(([x, y, radius]) => [x + centre.x, y + centre.y, radius])
-  const shapes = [...dots, ...puffs]
-
-  const cloud = new Graphics()
-  for (const [x, y, radius] of shapes) cloud.circle(x, y, radius + 4)
-  cloud.fill(OUTLINE)
-  for (const [x, y, radius] of shapes) cloud.circle(x, y, radius)
-  cloud.fill(0xffffff)
-
-  const food = new Sprite()
-  food.anchor.set(0.5)
-  food.position.set(centre.x, centre.y)
-
-  const view = new Container()
-  view.addChild(cloud, food)
-  view.scale.set(0)
-  return { view, food }
+  ],
 }
 
-function createPlate() {
-  const dish = new Graphics()
-  dish.ellipse(0, 9, 64, 60).fill({ color: 0x7a4f2e, alpha: 0.2 })
-  dish.circle(0, 0, 62).fill(0xfffdf8).stroke({ color: 0xead9c6, width: 4 })
-  dish.circle(0, 0, 45).stroke({ color: 0xf3e8da, width: 3 })
-
-  const food = new Sprite()
-  food.anchor.set(0.5)
-
-  const view = new Container()
-  view.addChild(dish, food)
-  view.hitArea = new Circle(0, 0, 70)
-  view.cursor = 'pointer'
-  view.on('pointerover', () => view.scale.set(1.06))
-  view.on('pointerout', () => view.scale.set(1))
-  return { view, food, frame: null, homeX: 0 }
+function createStall(texture) {
+  const stall = new Sprite(texture)
+  stall.anchor.set(0.5, 1)
+  stall.scale.set(STALL_SCALE)
+  return stall
 }
 
 // Builds the shop on a Pixi app. The scene sits empty until start() is called, then customers
@@ -106,12 +54,20 @@ function createPlate() {
 //                design-pixel point at the middle of where a customer stands, with the clear
 //                width between the stalls there.
 export function createShop(app, textures, { onServed = () => {}, onLayout = () => {} } = {}) {
-  const { tween, wait } = createTweens(app.ticker)
-  const size = { width: SAFE_WIDTH, height: SAFE_HEIGHT }
-  const scenery = createScenery(textures)
-  const customer = createCustomer(textures)
-  const bubble = createBubble()
-  const plates = Array.from({ length: CHOICES }, createPlate)
+  const tweens = createTweens(app.ticker)
+  const { tween, wait } = tweens
+  const scenery = createScenery()
+  const bakery = createStall(textures[STALLS.bakery])
+  const kitchen = createStall(textures[STALLS.kitchen])
+  scenery.back.addChild(bakery, kitchen)
+
+  const customer = createCustomer(textures, app.ticker, tweens)
+  const bubble = createBubble(BUBBLE, app.ticker, tweens)
+  bubble.view.y = BUBBLE.y
+  const thought = new Sprite()
+  thought.anchor.set(0.5)
+  bubble.content.addChild(thought)
+  const plates = Array.from({ length: CHOICES }, () => Object.assign(createDish(), { frame: null }))
 
   // Customers stand behind the counter; the plates sit on top of it.
   const customerLayer = new Container()
@@ -122,42 +78,37 @@ export function createShop(app, textures, { onServed = () => {}, onLayout = () =
   world.addChild(scenery.back, customerLayer, scenery.counter, plateLayer, scenery.awning)
   app.stage.addChild(world)
 
+  let width = SAFE_WIDTH
   let wanted = null
-  let lastCharacter = null
-  let queue = []
   let onPick = null // set while the player is choosing
   for (const plate of plates) plate.view.on('pointertap', () => onPick?.(plate))
 
-  function layout() {
-    const scale = Math.min(app.screen.width / SAFE_WIDTH, app.screen.height / SAFE_HEIGHT)
-    size.width = app.screen.width / scale
-    size.height = app.screen.height / scale
-    world.scale.set(scale)
-    const { stallGap } = scenery.layout(size.width, size.height)
-    customerLayer.position.set(size.width / 2, size.height - COUNTER_HEIGHT - 8)
-    plateLayer.position.set(size.width / 2, size.height - COUNTER_HEIGHT / 2 + 8)
+  function arrange(screen) {
+    width = screen.width
+    const ground = screen.height - COUNTER_DEPTH
+    const stallOffset = Math.min(Math.max(width * 0.3, 200), 360)
+    scenery.layout(width, screen.height, COUNTER_DEPTH)
+    bakery.position.set(width / 2 - stallOffset, ground - 34)
+    kitchen.position.set(width / 2 + stallOffset, ground - 34)
+    customerLayer.position.set(width / 2, ground - 8)
+    plateLayer.position.set(width / 2, screen.height - COUNTER_DEPTH / 2 + 8)
 
-    const spacing = Math.min(PLATE_SPACING, (size.width - 24) / CHOICES)
+    const spacing = Math.min(PLATE_SPACING, (width - 24) / CHOICES)
     plates.forEach((plate, i) => {
-      plate.homeX = (i - (CHOICES - 1) / 2) * spacing
-      plate.view.x = plate.homeX
+      plate.home.x = (i - (CHOICES - 1) / 2) * spacing
+      plate.view.x = plate.home.x
     })
 
     onLayout({
-      scale,
+      scale: screen.scale,
       hudTop: scenery.awningBottom,
-      stage: { x: customerLayer.x, y: customerLayer.y - STAGE_HEIGHT, width: stallGap },
+      stage: {
+        x: customerLayer.x,
+        y: customerLayer.y - STAGE_HEIGHT,
+        // The clear width between the two stalls.
+        width: kitchen.x - kitchen.width / 2 - (bakery.x + bakery.width / 2),
+      },
     })
-  }
-
-  // Every character visits once before anyone comes back, and never twice in a row.
-  function nextCharacter() {
-    if (queue.length === 0) {
-      queue = shuffled(CHARACTERS)
-      if (queue[0] === lastCharacter) queue.push(queue.shift())
-    }
-    lastCharacter = queue.shift()
-    return lastCharacter
   }
 
   function setChoosing(choosing) {
@@ -165,23 +116,6 @@ export function createShop(app, textures, { onServed = () => {}, onLayout = () =
       plate.view.eventMode = choosing ? 'static' : 'none'
       plate.view.scale.set(1)
     }
-  }
-
-  // The customer hops along, since the characters are single pictures.
-  function walk(from, to) {
-    const distance = Math.abs(to - from)
-    const steps = Math.max(1, Math.round(distance / STEP_LENGTH))
-    customer.view.x = from
-    return tween(
-      distance / WALK_SPEED,
-      (p) => {
-        const stride = p * steps * Math.PI
-        customer.view.x = from + (to - from) * p
-        customer.body.y = -Math.abs(Math.sin(stride)) * 12
-        customer.body.rotation = Math.sin(stride) * 0.07
-      },
-      ease.linear,
-    )
   }
 
   // Puts the wanted food and some others on the plates, in a random order.
@@ -205,23 +139,17 @@ export function createShop(app, textures, { onServed = () => {}, onLayout = () =
   }
 
   function think() {
-    bubble.food.texture = textures[wanted]
-    fit(bubble.food, 112, 96)
-    return tween(380, (p) => bubble.view.scale.set(p), ease.backOut)
+    thought.texture = textures[wanted]
+    fit(thought, 112, 96)
+    return bubble.show()
   }
 
   // A wrong pick is no big deal: the plate wiggles and that food fades, so it is not picked again.
   function nope(plate) {
     plate.view.eventMode = 'none'
     plate.view.scale.set(1)
-    tween(
-      400,
-      (p) => {
-        plate.view.x = plate.homeX + Math.sin(p * Math.PI * 6) * 9 * (1 - p)
-        plate.food.alpha = 1 - 0.6 * p
-      },
-      ease.linear,
-    )
+    wiggle(plate.view, plate.home.x, tween)
+    tween(400, (p) => (plate.food.alpha = 1 - 0.6 * p), ease.linear)
   }
 
   // Resolves with the plate once the player taps the food the customer is thinking of.
@@ -253,47 +181,24 @@ export function createShop(app, textures, { onServed = () => {}, onLayout = () =
     await tween(180, (p) => food.scale.set(full * 0.65 * (1 - p)), ease.in)
   }
 
-  function celebrate() {
-    const { body, heart } = customer
-    onServed()
-    heart.visible = true
-    return Promise.all([
-      tween(200, (p) => bubble.view.scale.set(1 - p), ease.in),
-      tween(420, (p) => {
-        heart.scale.set(HEART_SCALE * p)
-        heart.y = -214 - 24 * p
-      }, ease.backOut),
-      tween(640, (p) => (body.y = -Math.abs(Math.sin(p * Math.PI * 2)) * 26), ease.linear),
-    ])
-  }
-
   async function playRound() {
-    const offstage = size.width / 2 + 120
-    customer.body.texture = textures[nextCharacter()]
-    customer.heart.visible = false
+    const offstage = width / 2 + 120
+    customer.next()
     wanted = shuffled(FOODS.filter((frame) => frame !== wanted))[0]
 
     // Customers cross the screen from right to left.
-    await walk(offstage, 0)
+    await customer.walk(offstage, 0)
     await Promise.all([think(), stockPlates()])
     const plate = await rightPick()
     await deliver(plate)
-    await celebrate()
+    onServed()
+    await Promise.all([bubble.hide(), customer.celebrate()])
     await wait(500)
-    await walk(0, -offstage)
+    await customer.walk(0, -offstage)
     await wait(300)
   }
 
-  // Gentle idle motion: the customer breathes and the bubble floats.
-  let time = 0
-  app.ticker.add((ticker) => {
-    time += ticker.deltaMS / 1000
-    customer.body.scale.y = CUSTOMER_SCALE * (1 + Math.sin(time * 3) * 0.02)
-    bubble.view.y = BUBBLE_Y + Math.sin(time * 2) * 4
-  })
-
-  app.renderer.on('resize', layout)
-  layout()
+  fitToScreen(app, world, SAFE_WIDTH, SAFE_HEIGHT, arrange)
   setChoosing(false)
 
   let started = false

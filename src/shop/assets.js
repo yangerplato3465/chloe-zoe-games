@@ -1,11 +1,8 @@
 // The shop's art, as "<atlas>/<frame name>" references (see lib/atlases.js).
-const character = (n) => `characters/image-${n}.png`
 const food = (n) => `food/images-${n}.png`
 
 // The atlases the Pixi scene draws from.
 export const SHOP_ATLASES = ['characters', 'food']
-
-export const CHARACTERS = [0, 1, 2, 3, 4].map(character)
 
 // The food atlas also carries the stalls and the heart. Its images-13, 14 and 15 are smaller
 // copies of the cake, bread and taiyaki; they are left out so that two plates on the counter
@@ -31,4 +28,3 @@ export const FOOD = {
 export const FOODS = Object.values(FOOD)
 
 export const STALLS = { bakery: food(8), kitchen: food(9) }
-export const HEART = food(21)

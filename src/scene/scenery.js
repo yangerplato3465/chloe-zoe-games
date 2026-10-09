@@ -1,12 +1,8 @@
-import { Container, Graphics, Sprite } from 'pixi.js'
-import { STALLS } from './assets.js'
-
-export const COUNTER_HEIGHT = 220
+import { Container, Graphics } from 'pixi.js'
 
 const AWNING_HEIGHT = 46
 const STRIPE_WIDTH = 64
 const AWNING_BOTTOM = AWNING_HEIGHT + STRIPE_WIDTH / 2 // the tips of the scallops
-const STALL_SCALE = 1.5
 
 const SKY = 0xd9f0f7
 const CLOUD = 0xffffff
@@ -28,13 +24,13 @@ const CLOUDS = [
   [0.8, 0.3, 1.15],
 ]
 
-// [x as a fraction of the width, y below the counter's far edge, length]
+// [x as a fraction of the width, y as a fraction of the counter's depth, length]
 const GRAIN = [
-  [0.06, 52, 90],
-  [0.3, 178, 130],
-  [0.52, 40, 70],
-  [0.7, 190, 100],
-  [0.88, 60, 80],
+  [0.06, 0.24, 90],
+  [0.3, 0.81, 130],
+  [0.52, 0.18, 70],
+  [0.7, 0.86, 100],
+  [0.88, 0.27, 80],
 ]
 
 function drawCloud(g, x, y, size) {
@@ -58,16 +54,15 @@ function drawBackdrop(g, width, height, ground) {
 }
 
 // The counter is seen from the shopkeeper's side, so it is all table top.
-function drawCounter(g, width, height) {
-  const top = height - COUNTER_HEIGHT
+function drawCounter(g, width, top, depth) {
   g.clear()
-  g.rect(0, top, width, COUNTER_HEIGHT).fill(WOOD)
-  for (const [fx, dy, length] of GRAIN) g.roundRect(width * fx, top + dy, length, 5, 2.5).fill(WOOD_GRAIN)
+  g.rect(0, top, width, depth).fill(WOOD)
+  for (const [fx, fy, length] of GRAIN) g.roundRect(width * fx, top + depth * fy, length, 5, 2.5).fill(WOOD_GRAIN)
   g.rect(0, top, width, 16).fill(WOOD_EDGE)
   g.rect(0, top + 16, width, 5).fill(WOOD_SHINE)
 }
 
-function drawAwning(g, width) {
+function drawAwning(g, width, colors) {
   // An odd number of stripes, centred, so both ends of the awning match.
   const count = Math.ceil(width / STRIPE_WIDTH / 2) * 2 + 1
   const start = (width - count * STRIPE_WIDTH) / 2
@@ -76,39 +71,26 @@ function drawAwning(g, width) {
     const x = start + i * STRIPE_WIDTH
     g.rect(x, 0, STRIPE_WIDTH, AWNING_HEIGHT)
       .circle(x + STRIPE_WIDTH / 2, AWNING_HEIGHT, STRIPE_WIDTH / 2)
-      .fill(i % 2 ? AWNING_CREAM : AWNING_PINK)
+      .fill(colors[i % 2])
   }
 }
 
-function createStall(texture) {
-  const stall = new Sprite(texture)
-  stall.anchor.set(0.5, 1)
-  stall.scale.set(STALL_SCALE)
-  return stall
-}
-
-// Everything that is not part of the gameplay, split into layers so the game can slot
-// customers behind the counter and under the awning.
-export function createScenery(textures) {
+// The setting every game shares: sky, hills and a path at the back, a counter in front and an
+// awning on top. It comes in layers so a game can slot its customers behind the counter, and
+// `back` is a container a game can add its own props to.
+export function createScenery({ awning: awningColors = [AWNING_PINK, AWNING_CREAM] } = {}) {
   const backdrop = new Graphics()
-  const bakery = createStall(textures[STALLS.bakery])
-  const kitchen = createStall(textures[STALLS.kitchen])
   const back = new Container()
-  back.addChild(backdrop, bakery, kitchen)
+  back.addChild(backdrop)
   const counter = new Graphics()
   const awning = new Graphics()
 
-  function layout(width, height) {
-    const ground = height - COUNTER_HEIGHT
-    const stallOffset = Math.min(Math.max(width * 0.3, 200), 360)
+  // counterDepth is how much of the bottom of the screen the counter takes up.
+  function layout(width, height, counterDepth) {
+    const ground = height - counterDepth
     drawBackdrop(backdrop, width, height, ground)
-    bakery.position.set(width / 2 - stallOffset, ground - 34)
-    kitchen.position.set(width / 2 + stallOffset, ground - 34)
-    drawCounter(counter, width, height)
-    drawAwning(awning, width)
-
-    // The clear width between the two stalls, where customers stand.
-    return { stallGap: kitchen.x - kitchen.width / 2 - (bakery.x + bakery.width / 2) }
+    drawCounter(counter, width, ground, counterDepth)
+    drawAwning(awning, width, awningColors)
   }
 
   return { back, counter, awning, layout, awningBottom: AWNING_BOTTOM }
