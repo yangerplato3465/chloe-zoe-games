@@ -1,7 +1,7 @@
-import { Circle, Container, Graphics, Sprite, Text } from 'pixi.js'
+import { Circle, Container, Graphics, Sprite } from 'pixi.js'
 import { CHARACTERS, FOODS, HEART } from './assets.js'
 import { COUNTER_HEIGHT, createScenery } from './scenery.js'
-import { ease, tween, wait } from './tween.js'
+import { createTweens, ease } from '../lib/tween.js'
 
 // The game is laid out in design pixels. At least SAFE_WIDTH x SAFE_HEIGHT of them always
 // fit on screen; wider or taller screens just show more of the scene.
@@ -95,34 +95,18 @@ function createPlate() {
   return { view, food, frame: null, homeX: 0 }
 }
 
-function createTally(textures) {
-  const pill = new Graphics().roundRect(-60, -26, 120, 52, 26).fill({ color: 0xffffff, alpha: 0.85 })
-  const icon = new Sprite(textures[HEART])
-  icon.anchor.set(0.5)
-  icon.x = -28
-  const count = new Text({
-    text: '0',
-    style: {
-      fontFamily: ['Arial Rounded MT Bold', 'Nunito', 'Trebuchet MS', 'sans-serif'],
-      fontSize: 30,
-      fontWeight: '700',
-      fill: 0x8a6a5a,
-    },
-  })
-  count.anchor.set(0, 0.5)
-  count.x = 2
-  const view = new Container()
-  view.addChild(pill, icon, count)
-  return { view, count }
-}
-
-export function startGame(app, textures) {
+// Runs the shop on a Pixi app until that app is destroyed. The game only draws the scene;
+// whoever starts it hears about it through the callbacks:
+//   onServed()                  a customer just got the food they wanted
+//   onLayout({ scale, hudTop }) the scene was (re)laid out: screen pixels per design pixel,
+//                               and the design-pixel height of the awning that a HUD should clear
+export function startGame(app, textures, { onServed = () => {}, onLayout = () => {} } = {}) {
+  const { tween, wait } = createTweens(app.ticker)
   const size = { width: SAFE_WIDTH, height: SAFE_HEIGHT }
   const scenery = createScenery(textures)
   const customer = createCustomer(textures)
   const bubble = createBubble()
   const plates = Array.from({ length: CHOICES }, createPlate)
-  const tally = createTally(textures)
 
   // Customers stand behind the counter; the plates sit on top of it.
   const customerLayer = new Container()
@@ -130,10 +114,9 @@ export function startGame(app, textures) {
   const plateLayer = new Container()
   plateLayer.addChild(...plates.map((plate) => plate.view))
   const world = new Container()
-  world.addChild(scenery.back, customerLayer, scenery.counter, plateLayer, scenery.awning, tally.view)
+  world.addChild(scenery.back, customerLayer, scenery.counter, plateLayer, scenery.awning)
   app.stage.addChild(world)
 
-  let hearts = 0
   let wanted = null
   let lastCharacter = null
   let queue = []
@@ -148,13 +131,14 @@ export function startGame(app, textures) {
     scenery.layout(size.width, size.height)
     customerLayer.position.set(size.width / 2, size.height - COUNTER_HEIGHT - 8)
     plateLayer.position.set(size.width / 2, size.height - COUNTER_HEIGHT / 2 + 8)
-    tally.view.position.set(84, scenery.awningBottom + 42)
 
     const spacing = Math.min(PLATE_SPACING, (size.width - 24) / CHOICES)
     plates.forEach((plate, i) => {
       plate.homeX = (i - (CHOICES - 1) / 2) * spacing
       plate.view.x = plate.homeX
     })
+
+    onLayout({ scale, hudTop: scenery.awningBottom })
   }
 
   // Every character visits once before anyone comes back, and never twice in a row.
@@ -262,8 +246,7 @@ export function startGame(app, textures) {
 
   function celebrate() {
     const { body, heart } = customer
-    hearts += 1
-    tally.count.text = String(hearts)
+    onServed()
     heart.visible = true
     return Promise.all([
       tween(200, (p) => bubble.view.scale.set(1 - p), ease.in),
@@ -272,7 +255,6 @@ export function startGame(app, textures) {
         heart.y = -214 - 24 * p
       }, ease.backOut),
       tween(640, (p) => (body.y = -Math.abs(Math.sin(p * Math.PI * 2)) * 26), ease.linear),
-      tween(360, (p) => tally.view.scale.set(1 + Math.sin(p * Math.PI) * 0.18), ease.linear),
     ])
   }
 
