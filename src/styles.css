@@ -1,8 +1,27 @@
-html,
-body,
-#app {
+/* Colours are taken from the games' art: cream paper, soft brown outlines, awning pink. */
+:root {
+  --paper: #fbf2e4;
+  --paper-dot: #efe1cc;
+  --card: #fffaf3;
+  --ink: #5a3f33;
+  --ink-soft: #7d5f50;
+  --line: #9c7b6a;
+  --pink: #f8b9c5;
+  --pink-deep: #dd6f87;
+  --sky: #d9f0f7;
+  --font: 'Fredoka Variable', 'Arial Rounded MT Bold', 'Hiragino Maru Gothic ProN', system-ui, sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
   margin: 0;
-  height: 100%;
-  overflow: hidden;
-  background: #d9f0f7;
+  /* Dotted paper, like a page from a notebook. */
+  background: var(--paper) radial-gradient(var(--paper-dot) 1.5px, transparent 1.6px) 0 0 / 24px 24px;
+  color: var(--ink);
+  font-family: var(--font);
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
 }

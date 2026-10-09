@@ -2,7 +2,7 @@
 import { Application } from 'pixi.js'
 import { onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import HeartTally from './HeartTally.vue'
-import { loadTextures } from '../shop/assets.js'
+import { loadTextures } from '../shop/textures.js'
 import { startGame } from '../shop/game.js'
 
 const root = ref(null)
