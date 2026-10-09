@@ -6,6 +6,8 @@ import countingData from '../../Assets/counting.json'
 import countingImage from '../../Assets/counting.png'
 import foodData from '../../Assets/food.json'
 import foodImage from '../../Assets/food.png'
+import ramenData from '../../Assets/ramen.json'
+import ramenImage from '../../Assets/ramen.png'
 import uiData from '../../Assets/UI.json'
 import uiImage from '../../Assets/UI.png'
 
@@ -18,6 +20,7 @@ export const ATLASES = {
   characters: { data: charactersData, image: charactersImage },
   counting: { data: countingData, image: countingImage },
   food: { data: foodData, image: foodImage },
+  ramen: { data: ramenData, image: ramenImage },
   ui: { data: uiData, image: uiImage },
 }
 
