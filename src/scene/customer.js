@@ -8,7 +8,8 @@ const HEART_SCALE = 1.6
 const WALK_SPEED = 0.3 // design pixels per millisecond
 const STEP_LENGTH = 90
 
-// The customer who visits a game: one of the characters, standing on view's origin.
+// The customer who visits a game: one of the characters, standing on view's origin. `body` is
+// their picture, for a game that wants to do something to it.
 // Needs the "characters" and "food" atlases (the heart is in the food atlas).
 export function createCustomer(textures, ticker, { tween }) {
   const body = new Sprite()
@@ -23,8 +24,8 @@ export function createCustomer(textures, ticker, { tween }) {
   let queue = []
   let character = null
 
-  // Brings in the next character. Everyone visits once before anyone comes back, and nobody
-  // comes twice in a row.
+  // Brings in the next character and says which one it is. Everyone visits once before anyone
+  // comes back, and nobody comes twice in a row.
   function next() {
     if (queue.length === 0) {
       queue = shuffled(CHARACTERS)
@@ -33,6 +34,7 @@ export function createCustomer(textures, ticker, { tween }) {
     character = queue.shift()
     body.texture = textures[character]
     heart.visible = false
+    return character
   }
 
   // The customer hops along, since the characters are single pictures.
@@ -75,5 +77,5 @@ export function createCustomer(textures, ticker, { tween }) {
     body.scale.y = SCALE * (1 + Math.sin(time * 3) * 0.02)
   })
 
-  return { view, next, walk, celebrate }
+  return { view, body, next, walk, celebrate }
 }

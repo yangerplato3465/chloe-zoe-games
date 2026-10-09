@@ -1,6 +1,7 @@
 import { defineAsyncComponent } from 'vue'
 import BurgerCover from './components/BurgerCover.vue'
 import CountingCover from './components/CountingCover.vue'
+import DoctorCover from './components/DoctorCover.vue'
 import RamenCover from './components/RamenCover.vue'
 import ShopCover from './components/ShopCover.vue'
 
@@ -43,6 +44,14 @@ export const games = [
     background: '#d9f0f7',
     cover: RamenCover,
     component: defineAsyncComponent(() => import('./components/RamenGame.vue')),
+  },
+  {
+    id: 'doctor',
+    title: 'Little Doctor',
+    blurb: 'Help everyone feel better.',
+    background: '#d9f0f7',
+    cover: DoctorCover,
+    component: defineAsyncComponent(() => import('./components/DoctorGame.vue')),
   },
 ]
 

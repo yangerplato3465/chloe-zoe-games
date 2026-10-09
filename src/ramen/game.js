@@ -1,11 +1,11 @@
 import { Container, Graphics, Rectangle, Sprite, Texture } from 'pixi.js'
 import { RAMEN } from './assets.js'
-import { playSfx } from '../lib/sfx.js'
 import { createTweens, ease } from '../lib/tween.js'
 import { createBubble } from '../scene/bubble.js'
 import { createCustomer } from '../scene/customer.js'
-import { createDish, wiggle } from '../scene/dish.js'
+import { createDish } from '../scene/dish.js'
 import { fit } from '../scene/fit.js'
+import { createGuide } from '../scene/guide.js'
 import { createScenery } from '../scene/scenery.js'
 import { fitToScreen } from '../scene/screen.js'
 
@@ -146,35 +146,9 @@ export function createRamenGame(app, textures, { onServed = () => {}, onLayout =
   fit(dream, 124, 104)
   bubble.content.addChild(dream)
 
-  let waiting = null // { things, resolve } while the player is expected to tap one of some things
+  // The player is led through the steps one tap at a time (see scene/guide.js).
+  const { tappable, tapOne } = createGuide(app.ticker, tweens)
   let time = 0
-
-  // Anything the player can tap. `home` is where its view belongs and `rest` its usual scale.
-  function tappable(thing) {
-    thing.view.eventMode = 'static'
-    thing.view.cursor = 'pointer'
-    thing.view.on('pointertap', () => tapped(thing))
-    return thing
-  }
-
-  function tapped(thing) {
-    if (!waiting) return
-    // Not that one yet: a gentle shake, and whatever is next keeps pulsing.
-    if (!waiting.things.includes(thing)) {
-      playSfx('wrong')
-      wiggle(thing.view, thing.home.x, tween)
-      return
-    }
-    playSfx('press')
-    for (const other of waiting.things) other.view.scale.set(other.rest)
-    const { resolve } = waiting
-    waiting = null
-    resolve(thing)
-  }
-
-  // Resolves with whichever of these things the player taps. They pulse meanwhile, to show
-  // what to tap next.
-  const tapOne = (things) => new Promise((resolve) => (waiting = { things, resolve }))
 
   // ---- The chopping board
   const knife = createKnife()
@@ -574,12 +548,9 @@ export function createRamenGame(app, textures, { onServed = () => {}, onLayout =
     await wait(300)
   }
 
-  // Gentle idle motion: whatever is to be tapped next pulses, and the flames flicker.
+  // Gentle idle motion: the flames flicker.
   app.ticker.add(() => {
     time += app.ticker.deltaMS / 1000
-    if (waiting) {
-      for (const thing of waiting.things) thing.view.scale.set(thing.rest * (1.03 + Math.sin(time * 5) * 0.03))
-    }
     if (flames.visible) flames.scale.y = flames.scale.x * (1 + Math.sin(time * 9) * 0.1)
   })
 
