@@ -1,5 +1,7 @@
 import burgerData from '../../Assets/burger.json'
 import burgerImage from '../../Assets/burger.png'
+import cakeData from '../../Assets/cake.json'
+import cakeImage from '../../Assets/cake.png'
 import charactersData from '../../Assets/characters.json'
 import charactersImage from '../../Assets/characters.png'
 import countingData from '../../Assets/counting.json'
@@ -19,6 +21,7 @@ import uiImage from '../../Assets/UI.png'
 // (the main page's covers, the HUD) do not have to load the game engine.
 export const ATLASES = {
   burger: { data: burgerData, image: burgerImage },
+  cake: { data: cakeData, image: cakeImage },
   characters: { data: charactersData, image: charactersImage },
   counting: { data: countingData, image: countingImage },
   doctor: { data: doctorData, image: doctorImage },

@@ -1,5 +1,6 @@
 import { defineAsyncComponent } from 'vue'
 import BurgerCover from './components/BurgerCover.vue'
+import CakeCover from './components/CakeCover.vue'
 import CountingCover from './components/CountingCover.vue'
 import DoctorCover from './components/DoctorCover.vue'
 import RamenCover from './components/RamenCover.vue'
@@ -52,6 +53,14 @@ export const games = [
     background: '#d9f0f7',
     cover: DoctorCover,
     component: defineAsyncComponent(() => import('./components/DoctorGame.vue')),
+  },
+  {
+    id: 'cake',
+    title: 'Cake Party',
+    blurb: 'Make the cake they dream of.',
+    background: '#d9f0f7',
+    cover: CakeCover,
+    component: defineAsyncComponent(() => import('./components/CakeGame.vue')),
   },
 ]
 

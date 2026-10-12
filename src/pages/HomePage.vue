@@ -3,6 +3,8 @@ import AtlasSprite from '../components/AtlasSprite.vue'
 import GameCard from '../components/GameCard.vue'
 import { games } from '../games.js'
 import { CHARACTERS } from '../lib/atlases.js'
+// The version shown at the foot of the page is the one in package.json.
+import { version } from '../../package.json'
 </script>
 
 <template>
@@ -28,6 +30,8 @@ import { CHARACTERS } from '../lib/atlases.js'
         <GameCard :game="game" />
       </li>
     </ul>
+
+    <footer class="version">Version {{ version }}</footer>
   </main>
 </template>
 
@@ -99,6 +103,14 @@ h1 {
 /* Cards in a row are all as tall as the tallest one. */
 .games li {
   display: grid;
+}
+
+.version {
+  margin-top: clamp(32px, 5vw, 56px);
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  font-weight: 400;
+  text-align: center;
 }
 
 @keyframes breathe {
