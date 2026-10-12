@@ -1,6 +1,6 @@
 {
   "name": "chloe-zoe-games",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "description": "A cozy little shop game for kids, made with PixiJS.",

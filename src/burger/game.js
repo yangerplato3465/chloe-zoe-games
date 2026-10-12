@@ -1,9 +1,10 @@
-import { Circle, Container, Graphics, Sprite } from 'pixi.js'
+import { Container, Graphics } from 'pixi.js'
 import { BOX, FILLINGS, PARTS } from './assets.js'
 import { createStack } from './stack.js'
 import { shuffled } from '../lib/random.js'
 import { playSfx } from '../lib/sfx.js'
 import { createTweens, ease } from '../lib/tween.js'
+import { createBox } from '../scene/box.js'
 import { createBubble } from '../scene/bubble.js'
 import { createCustomer } from '../scene/customer.js'
 import { createDish, wiggle } from '../scene/dish.js'
@@ -65,27 +66,6 @@ function createTray() {
   tray.ellipse(0, 0, 88, 24).fill(0xfffdf8).stroke({ color: 0xead9c6, width: 4 })
   tray.ellipse(0, -1, 62, 15).stroke({ color: 0xf3e8da, width: 3 })
   return tray
-}
-
-// The takeaway box is the "serve" button.
-function createBox(texture) {
-  const shadow = new Graphics()
-  const picture = new Sprite(texture)
-  picture.anchor.set(0.5)
-  const view = new Container()
-  view.addChild(shadow, picture)
-  view.cursor = 'pointer'
-  view.on('pointerover', () => view.scale.set(1.06))
-  view.on('pointerout', () => view.scale.set(1))
-
-  function resize(slot) {
-    fit(picture, slot - 14, slot - 14)
-    shadow.clear()
-    shadow.ellipse(-slot * 0.05, slot * 0.36, slot * 0.34, slot * 0.08).fill({ color: 0x7a4f2e, alpha: 0.2 })
-    view.hitArea = new Circle(0, 0, slot / 2)
-  }
-
-  return { view, picture, home: { x: 0, y: 0 }, resize }
 }
 
 // Builds the burger game on a Pixi app. The scene sits empty until start() is called, then
