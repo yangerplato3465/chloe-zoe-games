@@ -25,17 +25,23 @@ function rememberMuted(muted) {
 // Whether the music is muted, for a button to show.
 export const bgmMuted = ref(recallMuted())
 
-// One shared player for the background music. It is created the first time it is needed, so the
-// file is only fetched once someone opens a game.
+// One shared player for the background music. It is created the first time it is needed, so a
+// tune is only fetched once someone opens a game. `track` is the tune it has: the shared one,
+// unless a game brings its own.
 let audio = null
+let track = null
 let playing = false // whether the music is meant to be playing right now
 
-function player() {
+function player(url = bgmUrl) {
   if (!audio) {
-    audio = new Audio(bgmUrl)
+    audio = new Audio()
     audio.loop = true
     audio.volume = VOLUME
     audio.muted = bgmMuted.value
+  }
+  if (track !== url) {
+    track = url
+    audio.src = url
   }
   return audio
 }
@@ -46,15 +52,15 @@ function play() {
 }
 
 // Starts fetching the music, so it is ready by the time a game starts.
-export function preloadBgm() {
-  player()
+export function preloadBgm(url) {
+  player(url)
 }
 
 // Starts the music from the top; it loops until stopBgm(). Browsers only let a page make sound
 // after a tap or click, which is why games call this from their Start button.
-export function startBgm() {
+export function startBgm(url) {
   playing = true
-  player().currentTime = 0
+  player(url).currentTime = 0
   play()
 }
 

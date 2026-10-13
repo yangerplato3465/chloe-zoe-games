@@ -3,6 +3,7 @@ import BurgerCover from './components/BurgerCover.vue'
 import CakeCover from './components/CakeCover.vue'
 import CountingCover from './components/CountingCover.vue'
 import DoctorCover from './components/DoctorCover.vue'
+import MathCover from './components/MathCover.vue'
 import RamenCover from './components/RamenCover.vue'
 import ShopCover from './components/ShopCover.vue'
 
@@ -61,6 +62,14 @@ export const games = [
     background: '#d9f0f7',
     cover: CakeCover,
     component: defineAsyncComponent(() => import('./components/CakeGame.vue')),
+  },
+  {
+    id: 'math',
+    title: 'Magic Math',
+    blurb: 'Add and take away.',
+    background: '#d9f0f7',
+    cover: MathCover,
+    component: defineAsyncComponent(() => import('./components/MathGame.vue')),
   },
 ]
 

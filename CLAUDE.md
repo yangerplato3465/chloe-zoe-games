@@ -61,13 +61,13 @@ The same reference works in two renderers:
 
 ### Shared scene parts (`src/scene/`)
 
-Reusable Pixi building blocks every game composes: `scenery` (sky, counter, awning in layers, with a per-game awning colour), `customer` (the visiting character with walk/celebrate), `bubble` (thought bubble), `dish` (tappable plate, plus `wiggle`), `box` (the takeaway box used as a serve button), `guide` (step-by-step "tap this next" helper used by the multi-step games) and `fit`. Each is a `createX(...)` factory returning a plain object with a `view` to place. `createCustomer` needs both the `characters` and `food` atlases, since the heart frame is in `food`.
+Reusable Pixi building blocks every game composes: `scenery` (sky, counter, awning in layers, with a per-game awning colour), `customer` (the visiting character with walk/celebrate), `bubble` (thought bubble), `dish` (tappable plate, plus `wiggle`), `box` (the takeaway box used as a serve button), `guide` (step-by-step "tap this next" helper used by the multi-step games) and `fit`. Each is a `createX(...)` factory returning a plain object with a `view` to place. `createCustomer` needs both the `characters` and `food` atlases, since the heart frame is in `food`, unless a game passes its own `characters` and `heart` frames (as `math` does).
 
 Covers mirror the game's look by hand: `CoverScene.vue` repeats the scenery colours and several covers repeat bubble shapes, so a visual change to the shared scenery usually needs a matching change there.
 
 ### Audio
 
-`src/lib/sfx.js` (Web Audio, named effects `press` and `wrong`) and `src/lib/bgm.js` (one shared looping `<audio>`, mute state persisted in `localStorage`). Browsers only allow sound after a user gesture, so music starts from the Start button and effects are played from tap handlers.
+`src/lib/sfx.js` (Web Audio, named effects `press` and `wrong`) and `src/lib/bgm.js` (one shared looping `<audio>`, mute state persisted in `localStorage`; a game can pass `PixiGame` its own tune through the `music` prop, as `math` does). Browsers only allow sound after a user gesture, so music starts from the Start button and effects are played from tap handlers.
 
 ## Adding a game
 

@@ -4,18 +4,23 @@ import { HEART, UI } from '../lib/atlases.js'
 
 defineProps({
   count: { type: Number, required: true },
+  // The art, for a game that brings its own: the frame, and the heart shown inside it.
+  frame: { type: String, default: UI.frame },
+  heart: { type: String, default: HEART },
+  // The frame's height, in the game's design pixels; the shared frame art is 121 x 93.
+  height: { type: Number, default: 124 },
+  // Where the board inside the frame is, as CSS inset fractions (top right bottom left). The
+  // default is the cream board inside the shared twig frame.
+  inset: { type: String, default: '16% 12.5% 18.5% 14%' },
 })
-
-// In the game's design pixels; the frame art is 121 x 93.
-const FRAME_HEIGHT = 124
 </script>
 
 <template>
   <div class="heart-tally">
-    <AtlasSprite class="frame" :frame="UI.frame" :height="FRAME_HEIGHT" />
+    <AtlasSprite class="frame" :frame="frame" :height="height" />
     <!-- Keyed on the count so the pop animation replays with every new heart. -->
-    <div :key="count" class="panel" :class="{ pop: count > 0 }">
-      <AtlasSprite :frame="HEART" />
+    <div :key="count" class="panel" :class="{ pop: count > 0 }" :style="{ inset }">
+      <AtlasSprite :frame="heart" />
       <span class="count">{{ count }}</span>
     </div>
   </div>
@@ -32,10 +37,9 @@ const FRAME_HEIGHT = 124
   display: block;
 }
 
-/* Sits over the cream board inside the twig frame, whose edges are these fractions in. */
+/* Sits over the board inside the frame (see the inset prop). */
 .panel {
   position: absolute;
-  inset: 16% 12.5% 18.5% 14%;
   display: flex;
   align-items: center;
   justify-content: center;

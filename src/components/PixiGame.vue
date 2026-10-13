@@ -17,6 +17,13 @@ const props = defineProps({
   // create(app, textures, { onServed, onLayout }) builds the scene and returns { start }.
   // shop/game.js describes the callbacks.
   create: { type: Function, required: true },
+  // For a game that brings its own art for what is drawn over the canvas:
+  //   startButton, startWidth   the Start button's frame and its widest size, in design pixels
+  //   tally                     HeartTally's frame, heart, height and inset
+  // Anything left out is the shared art.
+  skin: { type: Object, default: () => ({}) },
+  // The address of a tune of the game's own, to play instead of the shared one.
+  music: { type: String, default: undefined },
 })
 
 // In the game's design pixels.
@@ -31,10 +38,13 @@ const phase = ref('loading')
 // Reported by the game, so what Vue draws over the canvas scales and sits with the Pixi scene.
 const layout = reactive({ scale: 1, hudTop: 0, stage: { x: 0, y: 0, width: START_MAX_WIDTH } })
 
+const startButton = computed(() => props.skin.startButton ?? UI.startButton)
+
 // The Start button is as big as the game has room for, up to its maximum.
 const startHeight = computed(() => {
-  const { w, h } = findFrame(UI.startButton)
-  return (Math.min(START_MAX_WIDTH, layout.stage.width - START_MARGIN * 2) * h) / w
+  const { w, h } = findFrame(startButton.value)
+  const widest = props.skin.startWidth ?? START_MAX_WIDTH
+  return (Math.min(widest, layout.stage.width - START_MARGIN * 2) * h) / w
 })
 
 // Pixi objects are kept out of Vue's reactivity on purpose: they are not state to render.
@@ -43,7 +53,7 @@ let game = null
 let unmounted = false
 
 onMounted(async () => {
-  preloadBgm()
+  preloadBgm(props.music)
   preloadSfx()
   const pixi = new Application()
   const [textures] = await Promise.all([
@@ -72,7 +82,7 @@ onMounted(async () => {
 function start() {
   phase.value = 'playing'
   playSfx('press')
-  startBgm()
+  startBgm(props.music)
   game.start()
 }
 
@@ -93,7 +103,7 @@ onBeforeUnmount(() => {
       :style="{ top: `${layout.hudTop * layout.scale}px`, transform: `scale(${layout.scale})` }"
     >
       <Transition name="pop">
-        <HeartTally v-if="phase === 'playing'" :count="hearts" />
+        <HeartTally v-if="phase === 'playing'" v-bind="skin.tally" :count="hearts" />
       </Transition>
     </div>
 
@@ -108,7 +118,7 @@ onBeforeUnmount(() => {
     >
       <Transition name="pop">
         <button v-if="phase === 'ready'" class="start" type="button" aria-label="Start" @click="start">
-          <AtlasSprite :frame="UI.startButton" :height="startHeight" />
+          <AtlasSprite :frame="startButton" :height="startHeight" />
         </button>
       </Transition>
     </div>

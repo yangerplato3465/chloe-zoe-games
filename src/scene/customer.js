@@ -10,12 +10,13 @@ const STEP_LENGTH = 90
 
 // The customer who visits a game: one of the characters, standing on view's origin. `body` is
 // their picture, for a game that wants to do something to it.
-// Needs the "characters" and "food" atlases (the heart is in the food atlas).
-export function createCustomer(textures, ticker, { tween }) {
+// Needs the "characters" and "food" atlases (the heart is in the food atlas), unless the game
+// brings its own `characters` and `heart` frames.
+export function createCustomer(textures, ticker, { tween }, { characters = CHARACTERS, heart: heartFrame = HEART } = {}) {
   const body = new Sprite()
   body.anchor.set(0.5, 1)
   body.scale.set(SCALE)
-  const heart = new Sprite(textures[HEART])
+  const heart = new Sprite(textures[heartFrame])
   heart.anchor.set(0.5)
   heart.visible = false
   const view = new Container()
@@ -28,7 +29,7 @@ export function createCustomer(textures, ticker, { tween }) {
   // comes back, and nobody comes twice in a row.
   function next() {
     if (queue.length === 0) {
-      queue = shuffled(CHARACTERS)
+      queue = shuffled(characters)
       if (queue[0] === character) queue.push(queue.shift())
     }
     character = queue.shift()
