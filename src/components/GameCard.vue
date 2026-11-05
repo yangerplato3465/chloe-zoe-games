@@ -7,7 +7,7 @@ defineProps({
 </script>
 
 <template>
-  <RouterLink class="game-card" :to="{ name: 'play', params: { id: game.id } }">
+  <RouterLink class="game-card" :to="{ name: 'play', params: { id: game.id } }" :lang="game.lang">
     <div class="cover">
       <component :is="game.cover" />
     </div>

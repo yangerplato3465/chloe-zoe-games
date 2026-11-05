@@ -1,5 +1,5 @@
-import pressUrl from '../../Assets/press.ogg'
-import wrongUrl from '../../Assets/wrong.ogg'
+import pressUrl from '../../Assets/audio/press.ogg'
+import wrongUrl from '../../Assets/audio/wrong.ogg'
 
 // The sound effects and how loud each plays. wrong.ogg is recorded several times louder than
 // press.ogg, so it is turned down to sit beside it.

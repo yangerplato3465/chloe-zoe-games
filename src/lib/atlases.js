@@ -1,27 +1,30 @@
-import burgerData from '../../Assets/burger.json'
-import burgerImage from '../../Assets/burger.png'
-import cakeData from '../../Assets/cake.json'
-import cakeImage from '../../Assets/cake.png'
-import charactersData from '../../Assets/characters.json'
-import charactersImage from '../../Assets/characters.png'
-import countingData from '../../Assets/counting.json'
-import countingImage from '../../Assets/counting.png'
-import doctorData from '../../Assets/doctor.json'
-import doctorImage from '../../Assets/doctor.png'
-import foodData from '../../Assets/food.json'
-import foodImage from '../../Assets/food.png'
-import mathData from '../../Assets/math.json'
-import mathImage from '../../Assets/math.png'
-import ramenData from '../../Assets/ramen.json'
-import ramenImage from '../../Assets/ramen.png'
-import uiData from '../../Assets/UI.json'
-import uiImage from '../../Assets/UI.png'
+import advancedMathData from '../../Assets/advencedmath/advancedmath.json'
+import advancedMathImage from '../../Assets/advencedmath/advancedmath.png'
+import burgerData from '../../Assets/burger/burger.json'
+import burgerImage from '../../Assets/burger/burger.png'
+import cakeData from '../../Assets/cake/cake.json'
+import cakeImage from '../../Assets/cake/cake.png'
+import charactersData from '../../Assets/characters/characters.json'
+import charactersImage from '../../Assets/characters/characters.png'
+import countingData from '../../Assets/counting/counting.json'
+import countingImage from '../../Assets/counting/counting.png'
+import doctorData from '../../Assets/doctor/doctor.json'
+import doctorImage from '../../Assets/doctor/doctor.png'
+import foodData from '../../Assets/food/food.json'
+import foodImage from '../../Assets/food/food.png'
+import mathData from '../../Assets/math/math.json'
+import mathImage from '../../Assets/math/math.png'
+import ramenData from '../../Assets/ramen/ramen.json'
+import ramenImage from '../../Assets/ramen/ramen.png'
+import uiData from '../../Assets/UI/UI.json'
+import uiImage from '../../Assets/UI/UI.png'
 
 // Every sprite atlas the site uses, by name. A frame is always referred to as
 // "<atlas>/<frame name>" (for example "ui/image-5.png"), because different atlases reuse the
 // same frame names. This file stays free of Pixi on purpose, so pages that only show a frame
 // (the main page's covers, the HUD) do not have to load the game engine.
 export const ATLASES = {
+  advancedmath: { data: advancedMathData, image: advancedMathImage },
   burger: { data: burgerData, image: burgerImage },
   cake: { data: cakeData, image: cakeImage },
   characters: { data: charactersData, image: charactersImage },

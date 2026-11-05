@@ -21,12 +21,12 @@ export function createTool() {
 
 // There are no pictures of what is wrong with a patient, so those are drawn in code.
 
-// A sore purple patch.
+// A sore red patch.
 export function createBruise() {
   const bruise = new Graphics()
-  bruise.ellipse(0, 0, 7.5, 6).fill({ color: 0x8f7fc9, alpha: 0.62 })
-  bruise.ellipse(-1, 0.5, 4.6, 3.6).fill({ color: 0x6f5fb5, alpha: 0.6 })
-  bruise.ellipse(1.8, -1.6, 1.6, 1.1).fill({ color: 0xcfc6f2, alpha: 0.75 })
+  bruise.ellipse(0, 0, 7.5, 6).fill({ color: 0xe0605a, alpha: 0.62 })
+  bruise.ellipse(-1, 0.5, 4.6, 3.6).fill({ color: 0xc23a36, alpha: 0.6 })
+  bruise.ellipse(1.8, -1.6, 1.6, 1.1).fill({ color: 0xf6c3bd, alpha: 0.75 })
   return bruise
 }
 
