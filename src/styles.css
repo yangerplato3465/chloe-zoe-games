@@ -25,3 +25,9 @@ body {
   font-weight: 500;
   -webkit-font-smoothing: antialiased;
 }
+
+/* Chinese text gets a Chinese font. Without this, the site's font list would draw it in a
+   Japanese one where it has the characters, which writes some of them differently. */
+:lang(zh-Hant) {
+  font-family: 'Fredoka Variable', 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', system-ui, sans-serif;
+}

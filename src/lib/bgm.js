@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import bgmUrl from '../../Assets/bgm.mp3'
+import bgmUrl from '../../Assets/audio/bgm.mp3'
 
 const VOLUME = 0.5
 const MUTED_KEY = 'bgm-muted'

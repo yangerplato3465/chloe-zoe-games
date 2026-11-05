@@ -50,7 +50,7 @@ Games are laid out in design pixels. `fitToScreen` (`src/scene/screen.js`) scale
 
 ### Atlases and frame references
 
-Art lives in `Assets/` (capital A, outside `src/`) as TexturePacker JSON + PNG pairs, registered by name in `src/lib/atlases.js`. A frame is always referred to as `"<atlas>/<frame name>"` (e.g. `food/images-11.png`) because atlases reuse frame names. Frame names are meaningless numbers, so each game's `assets.js` maps them to named constants; add new art there rather than using raw frame strings in game code.
+Art lives in `Assets/` (capital A, outside `src/`), one folder per atlas holding its TexturePacker JSON + PNG pair (`Assets/<atlas>/<atlas>.json` and `.png`, plus any audio only that game uses, like `math/mathbgm.mp3`); shared sounds are in `Assets/audio/`. Atlases are registered by name in `src/lib/atlases.js`. A frame is always referred to as `"<atlas>/<frame name>"` (e.g. `food/images-11.png`) because atlases reuse frame names. Frame names are meaningless numbers, so each game's `assets.js` maps them to named constants; add new art there rather than using raw frame strings in game code.
 
 The same reference works in two renderers:
 
@@ -71,7 +71,7 @@ Covers mirror the game's look by hand: `CoverScene.vue` repeats the scenery colo
 
 ## Adding a game
 
-1. Add the atlas pair to `Assets/` and register it in `src/lib/atlases.js`.
+1. Add the atlas pair to its own `Assets/<atlas>/` folder and register it in `src/lib/atlases.js`.
 2. Create `src/<id>/assets.js` and `src/<id>/game.js` following the `create(app, textures, callbacks)` contract.
 3. Add `<Id>Game.vue` and `<Id>Cover.vue` in `src/components/`.
 4. Add an entry to `src/games.js`.

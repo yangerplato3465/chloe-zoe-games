@@ -1,4 +1,5 @@
 import { defineAsyncComponent } from 'vue'
+import AdvancedMathCover from './components/AdvancedMathCover.vue'
 import BurgerCover from './components/BurgerCover.vue'
 import CakeCover from './components/CakeCover.vue'
 import CountingCover from './components/CountingCover.vue'
@@ -12,6 +13,7 @@ import ShopCover from './components/ShopCover.vue'
 //   title       shown on its card and in the browser tab
 //   blurb       one short line under the title
 //   background  the colour behind the game while it loads
+//   lang        (optional) the language of its title and blurb, when it is not English
 //   cover       a component that draws the picture on its card
 //   component   the game itself, loaded only when someone picks it
 export const games = [
@@ -70,6 +72,15 @@ export const games = [
     background: '#d9f0f7',
     cover: MathCover,
     component: defineAsyncComponent(() => import('./components/MathGame.vue')),
+  },
+  {
+    id: 'advancedmath',
+    title: '數學小學堂',
+    blurb: '三年級的乘法、加減法和分數。',
+    lang: 'zh-Hant',
+    background: '#fdf1d8',
+    cover: AdvancedMathCover,
+    component: defineAsyncComponent(() => import('./components/AdvancedMathGame.vue')),
   },
 ]
 

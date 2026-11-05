@@ -1,6 +1,6 @@
 // The math game's art, as "<atlas>/<frame name>" references (see lib/atlases.js). Everything
 // this game shows comes from the math atlas, including the Start button and the heart counter.
-import mathBgm from '../../Assets/mathbgm.mp3'
+import mathBgm from '../../Assets/math/mathbgm.mp3'
 
 const math = (n) => `math/math-${n}.png`
 

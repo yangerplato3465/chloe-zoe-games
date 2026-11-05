@@ -1,0 +1,34 @@
+{"frames": {
+
+"ch1.png":
+{
+	"frame": {"x":2,"y":2,"w":597,"h":640},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":597,"h":640},
+	"sourceSize": {"w":597,"h":640}
+},
+"ch2.png":
+{
+	"frame": {"x":603,"y":2,"w":566,"h":640},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":566,"h":640},
+	"sourceSize": {"w":566,"h":640}
+},
+"ch3.png":
+{
+	"frame": {"x":1173,"y":2,"w":443,"h":640},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":443,"h":640},
+	"sourceSize": {"w":443,"h":640}
+}},
+"meta": {
+	"version": "1.0",
+	"image": "advancedmath.png",
+	"format": "RGBA8888",
+	"size": {"w":1618,"h":644},
+	"scale": "1"
+}
+}
